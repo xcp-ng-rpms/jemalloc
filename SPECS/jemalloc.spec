@@ -20,6 +20,8 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 # RHEL5/POWER has no atomic operations
 BuildRequires:  /usr/bin/xsltproc
 
+BuildRequires: gcc
+
 %description
 General-purpose scalable concurrent malloc(3) implementation.
 This distribution is the stand-alone "portable" implementation of %{name}.
