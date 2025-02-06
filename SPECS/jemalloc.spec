@@ -1,9 +1,9 @@
-%global package_speccommit 13536b04ed41cbe31886788a8ff021f8efcd5f6b
-%global usver 3.6.0
-%global xsver 2
+%global package_speccommit 94e340a21a60558f75ffba6d1847c8e89280747f
+%global usver 5.3.0
+%global xsver 1
 %global xsrel %{xsver}%{?xscount}%{?xshash}
 Name:           jemalloc
-Version:        3.6.0
+Version:        5.3.0
 
 Release: %{?xsrel}%{?dist}
 Summary:        General-purpose scalable concurrent malloc implementation
@@ -11,8 +11,7 @@ Summary:        General-purpose scalable concurrent malloc implementation
 Group:          System Environment/Libraries
 License:        BSD-2-Clause
 URL:            http://www.canonware.com/jemalloc/
-Source0: jemalloc-3.6.0.tar.bz2
-Patch0: 0001-Do-not-package-pprof.patch
+Source0: jemalloc-5.3.0.tar.bz2
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # Remove pprof, as it already exists in google-perftools
@@ -41,6 +40,7 @@ developing applications that use %{name}.
 
 
 %build
+
 %configure
 %{__make} %{?_smp_mflags}
 
@@ -60,28 +60,25 @@ find %{buildroot}%{_libdir}/ -name '*.a' -exec rm -vf {} ';'
 
 
 %files
-%defattr(-,root,root,-)
 %{_libdir}/libjemalloc.so.*
 %{_bindir}/jemalloc.sh
 %doc COPYING README VERSION
 %doc doc/jemalloc.html
-%ifarch ppc ppc64
-%if 0%{?rhel} == 5
-%doc COPYING.epel5-ppc
-%endif
-%endif
 
 %files devel
-%defattr(-,root,root,-)
 %{_includedir}/jemalloc
+%{_bindir}/jemalloc-config
+%{_libdir}/pkgconfig/jemalloc.pc
+%{_bindir}/jeprof
 %{_libdir}/libjemalloc.so
 %{_mandir}/man3/jemalloc.3*
 
-%post -p /sbin/ldconfig
-
-%postun -p /sbin/ldconfig
+%ldconfig_scriptlets
 
 %changelog
+* Thu Aug 01 2024 Stephen Cheng <stephen.cheng@cloud.com> - 5.3.0-1
+- Updated to 5.3.0
+
 * Tue Mar 28 2023 Pau Ruiz Safont <pau.ruizsafont@cloud.com> - 3.6.0-2
 - First imported release
 
